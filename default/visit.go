@@ -2,12 +2,12 @@ package main
 
 import (
 	"context"
-	"fmt"
 	"log"
 	"net/http"
 	"os"
 	"time"
 
+	"cloud.google.com/go/firestore"
 	firebase "firebase.google.com/go"
 	"google.golang.org/api/iterator"
 )
@@ -47,21 +47,18 @@ func visit_handler(w http.ResponseWriter, r *http.Request) {
 		log.Fatalf("Failed adding alovelace: %v", err)
 	}
 
-	//query := client.Collection("visits").OrderBy("timestamp", firestore.Asc).Limit(10)
-
-	iter := client.Collection("visits").Documents(ctx)
+	iter := client.Collection("visits").
+		OrderBy("timestamp", firestore.Desc).Limit(10).Documents(ctx)
 	for {
 		doc, err := iter.Next()
 		if err == iterator.Done {
 			break
 		}
 		if err != nil {
-			log.Fatalf("Failed to iterate: %v", err)
+			log.Fatalln(err)
 		}
 		log.Println(doc.Data())
 
 	}
-
-	fmt.Println("visit")
 
 }

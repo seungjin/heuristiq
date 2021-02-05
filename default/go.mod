@@ -1,4 +1,4 @@
-module github.com/seungjin/appengine-boot-303406
+module github.com/seungjin/heuristiq/default
 
 go 1.15
 
