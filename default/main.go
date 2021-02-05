@@ -8,8 +8,10 @@ import (
 )
 
 func main() {
+
 	http.HandleFunc("/", root_handler)
 	http.HandleFunc("/visit", visit_handler)
+	//http.HandleFunc("/fortunecookie", fortunecookie_handler)
 
 	port := os.Getenv("PORT")
 	if port == "" {

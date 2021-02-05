@@ -6,6 +6,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"strings"
 	"time"
 
 	"cloud.google.com/go/firestore"
@@ -51,7 +52,7 @@ func visit_handler(w http.ResponseWriter, r *http.Request) {
 	var output = ""
 
 	iter := client.Collection("visits").
-		OrderBy("timestamp", firestore.Desc).Limit(10).Documents(ctx)
+		OrderBy("timestamp", firestore.Desc).Limit(25).Documents(ctx)
 	for {
 		doc, err := iter.Next()
 		if err == iterator.Done {
@@ -61,10 +62,27 @@ func visit_handler(w http.ResponseWriter, r *http.Request) {
 			log.Fatalln(err)
 		}
 
-		a, _ := doc.Data()["request-header"].(map[string]interface{})
-		output = output + fmt.Sprintf("%v\t%v\t%v\n",
-			doc.Data()["timestamp"], a["X-Forwarded-For"], a["user-agent"],
-		)
+		a, _ := doc.Data()["timestamp"]
+		b, _ := doc.Data()["request-header"].(map[string]interface{})
+		c := ""
+		d := ""
+
+		if b["X-Forwarded-For"] != nil {
+			c = strings.Split(
+				fmt.Sprintf("%v", b["X-Forwarded-For"].([]interface{})[0]),
+				",")[0]
+		} else {
+			c = ""
+		}
+
+		if b["User-Agent"] != nil {
+			d = fmt.Sprintf("%v", b["User-Agent"].([]interface{})[0])
+		} else {
+			d = ""
+		}
+
+		output = output + fmt.Sprintf("%v\t%s\t%s\n", a, c, d)
+
 	}
 
 	fmt.Fprint(w, output)
