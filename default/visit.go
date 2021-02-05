@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"fmt"
 	"log"
 	"net/http"
 	"os"
@@ -47,6 +48,8 @@ func visit_handler(w http.ResponseWriter, r *http.Request) {
 		log.Fatalf("Failed adding alovelace: %v", err)
 	}
 
+	var output = ""
+
 	iter := client.Collection("visits").
 		OrderBy("timestamp", firestore.Desc).Limit(10).Documents(ctx)
 	for {
@@ -57,8 +60,17 @@ func visit_handler(w http.ResponseWriter, r *http.Request) {
 		if err != nil {
 			log.Fatalln(err)
 		}
-		log.Println(doc.Data())
 
+		a, _ := doc.Data()["request-header"].(map[string]interface{})
+		output = output + fmt.Sprintf("%v\t%v\t%v\n",
+			doc.Data()["timestamp"], a["X-Forwarded-For"], a["user-agent"],
+		)
 	}
 
+	fmt.Fprint(w, output)
+
+}
+
+func describe(i interface{}) {
+	fmt.Printf("(%v, %T)\n", i, i)
 }
