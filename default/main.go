@@ -15,6 +15,7 @@ import (
 
 func main() {
 
+<<<<<<< HEAD
 	mux := http.NewServeMux()
 
 	rootHandler := http.HandlerFunc(root_handler)
@@ -25,6 +26,11 @@ func main() {
 
 	visitsHandler := http.HandlerFunc(visits.Visit_handler)
 	mux.Handle("/visits", visitLog(visitsHandler))
+=======
+	http.HandleFunc("/", root_handler)
+	http.HandleFunc("/visit", visit_handler)
+	//http.HandleFunc("/fortunecookie", fortunecookie_handler)
+>>>>>>> 4a58d6baf1d7e3c3670b4f6ca1954849787a9897
 
 	port := os.Getenv("PORT")
 	if port == "" {
