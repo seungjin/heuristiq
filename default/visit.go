@@ -14,8 +14,6 @@ import (
 	"google.golang.org/api/iterator"
 )
 
-//var datastoreClient *datastore.Client
-
 func visit_handler(w http.ResponseWriter, r *http.Request) {
 
 	if r.URL.Path != "/visit" {

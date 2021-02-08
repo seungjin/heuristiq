@@ -49,5 +49,4 @@ func root_handler(w http.ResponseWriter, r *http.Request) {
 	default:
 		fmt.Fprintf(w, "Not supported HTTP method")
 	}
-
 }
