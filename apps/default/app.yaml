@@ -1,8 +1,0 @@
-
-runtime: go114
-service: default
-  
-env_variables:
-  GCLOUD_DATASET_ID: heuristiq
-
-
