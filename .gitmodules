@@ -1,0 +1,3 @@
+[submodule "apps/heuristiq-app-default"]
+	path = apps/heuristiq-app-default
+	url = git@github.com:seungjin/heuristiq-app-default.git
