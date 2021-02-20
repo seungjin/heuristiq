@@ -1,0 +1,2 @@
+# How heuristiq works
+
